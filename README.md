@@ -2,10 +2,10 @@
 
 == Explanation ==
 
-This directory contains the docker setup to run an instance of Moodle 3.11. A number of containers are created as follows
+This directory contains the docker setup to run an instance of Moodle 4.1. A number of containers are created as follows
 
-* PHP 7.4 to run the web instance of Moodle
-* PHP 7.4 (second instance) to run cron
+* PHP 8.0 to run the web instance of Moodle
+* PHP 8.0 (second instance) to run cron
 * nginx as the web server
 * redis for cache
 * mariadb for database
