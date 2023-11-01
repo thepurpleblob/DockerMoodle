@@ -37,3 +37,7 @@ Network host names are the same as the service names (e.g. just 'redis')
 * docker-compose up --build -d
 * If I haven't missed anything, you should be able to access/install Moodle at localhost
 * MySQL should be accessible by your favourite client also at localhost
+
+== NOTES ==
+
+* STACK breaks PHPUnit testing - see, https://github.com/maths/moodle-qtype_stack/issues/729 (a define line is needed)

@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
 RUN apt-get update && apt-get install -y zlib1g-dev libpng-dev libxml2-dev libzip-dev libxslt-dev libldap-dev cron
 RUN docker-php-ext-install pdo pdo_mysql mysqli gd soap intl zip xsl opcache ldap
