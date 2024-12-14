@@ -40,16 +40,8 @@ services:
             - 3308:3306
     redis:
         image: redis:latest
+        command: redis-server --save "" --appendonly no
         restart: always
-    maxima:
-        image: unihalle/maximapool:latest
-        restart: always
-        environment:
-            - MAXIMAPOOL_ADMIN_PASSWORD=purple
-        ports:
-            - "127.0.0.1:8765:8080"
-        volumes:
-            - "./maxima-pool.conf:/opt/maximapool/pool.conf:ro"
 volumes:
     mysqldata: {}
     xhprof:
