@@ -7,6 +7,7 @@ services:
         volumes:
             - ./nginx.conf:/etc/nginx/conf.d/default.conf:delegated
             - ./app:/app:delegated
+        restart: always
     php:
         build:
             context: .
@@ -36,28 +37,15 @@ services:
     redis:
         image: redis:latest
         restart: always
-    redis-cluster-node-1:
-        image: redis:latest
-        command: redis-server /usr/local/etc/redis/redis.conf
+    maxima:
+        image: unihalle/maximapool:latest
+        restart: always
+        environment:
+            - MAXIMAPOOL_ADMIN_PASSWORD=purple
         ports:
-            - "9079:6379"
+            - "127.0.0.1:8765:8080"
         volumes:
-            - ./redis_conf:/usr/local/etc/redis
-    redis-cluster-node-2:
-        image: redis:latest
-        command: redis-server /usr/local/etc/redis/redis.conf
-        ports:
-            - "9080:6379"
-        volumes:
-            - ./redis_conf:/usr/local/etc/redis
-    redis-cluster-configure:
-        image: redis:latest
-        command: /usr/local/etc/redis/redis-cluster-create.sh
-        depends_on:
-            - redis-cluster-node-1
-            - redis-cluster-node-2
-        volumes:
-            - ./redis_conf:/usr/local/etc/redis
+            - "./maxima-pool.conf:/opt/maximapool/pool.conf:ro"
 volumes:
     mysqldata: {}
 
