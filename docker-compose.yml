@@ -3,7 +3,7 @@ services:
     web:
         image: nginx:latest
         ports:
-            - "8081:8081"
+            - "8082:8082"
         volumes:
             - ./nginx.conf:/etc/nginx/conf.d/default.conf:delegated
             - ./app:/app:delegated
@@ -22,20 +22,42 @@ services:
         volumes:
             - ./app:/app:delegated
     mysql:
-        image: mariadb:10.5
+        image: mariadb:latest
         environment:
             MYSQL_ROOT_PASSWORD: 'purple'
             MYSQL_USER: 'moodleuser'
             MYSQL_PASSWORD: 'moodlepass'
-            MYSQL_DATABASE: 'moodle40'
+            MYSQL_DATABASE: 'moodle44'
         restart: always
         volumes:
             - mysqldata:/var/lib/mysql:delegated
         ports:
-            - 3307:3306
+            - 3308:3306
     redis:
         image: redis:latest
         restart: always
+    redis-cluster-node-1:
+        image: redis:latest
+        command: redis-server /usr/local/etc/redis/redis.conf
+        ports:
+            - "9079:6379"
+        volumes:
+            - ./redis_conf:/usr/local/etc/redis
+    redis-cluster-node-2:
+        image: redis:latest
+        command: redis-server /usr/local/etc/redis/redis.conf
+        ports:
+            - "9080:6379"
+        volumes:
+            - ./redis_conf:/usr/local/etc/redis
+    redis-cluster-configure:
+        image: redis:latest
+        command: /usr/local/etc/redis/redis-cluster-create.sh
+        depends_on:
+            - redis-cluster-node-1
+            - redis-cluster-node-2
+        volumes:
+            - ./redis_conf:/usr/local/etc/redis
 volumes:
     mysqldata: {}
 
