@@ -18,6 +18,7 @@ services:
         volumes:
             - ./app:/app:delegated
             - xhprof:/var/xhprof/xhprof-2.3.10
+            - ./moodle-browser-config:/app/moodle-browser-config
         restart: always
     cron:
         build:
@@ -42,6 +43,26 @@ services:
         image: redis:latest
         command: redis-server --save "" --appendonly no
         restart: always
+
+    firefox:
+        image: selenium/node-firefox:4.28.1-20250202
+        shm_size: 2gb
+        depends_on:
+        - selenium-hub
+        environment:
+        - SE_EVENT_BUS_HOST=selenium-hub
+        - SE_EVENT_BUS_PUBLISH_PORT=4442
+        - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+        ports:
+        - "6902:5900"
+
+    selenium-hub:
+        image: selenium/hub:4.28.1-20250202
+        ports:
+        - "4442:4442"
+        - "4443:4443"
+        - "4444:4444"
+
 volumes:
     mysqldata: {}
     xhprof:
